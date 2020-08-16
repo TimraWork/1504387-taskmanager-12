@@ -1,6 +1,6 @@
 import {TASK_COUNT, TASK_COUNT_PER_STEP} from "./const.js";
+import MenuView from "./view/menu.js";
 
-import {createMenuTemplate} from "./view/menu.js";
 import {createFilterTemplate} from "./view/filter.js";
 import {createTaskTemplate} from "./view/task.js";
 import {createBoardTemplate} from "./view/board.js";
@@ -9,7 +9,7 @@ import {createTaskEditTemplate} from "./view/task-edit.js";
 import {createLoadMoreTemplate} from "./view/load-more.js";
 import {generateTask} from "./mock/task.js";
 import {generateFilter} from "./mock/filter.js";
-import {renderTemplate} from "./utils.js";
+import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
 
 const main = document.querySelector(`.main`);
 const header = main.querySelector(`.main__control`);
@@ -17,11 +17,7 @@ const header = main.querySelector(`.main__control`);
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 const filters = generateFilter(tasks);
 
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
-renderTemplate(header, createMenuTemplate(), `beforeend`);
+renderElement(header, new MenuView().getElement(), RenderPosition.BEFOREEND);
 renderTemplate(main, createFilterTemplate(filters), `beforeend`);
 renderTemplate(main, createBoardTemplate(), `beforeend`);
 
@@ -29,7 +25,6 @@ const board = main.querySelector(`.board`);
 const taskList = board.querySelector(`.board__tasks`);
 
 renderTemplate(board, createSortTemplate(), `afterbegin`);
-
 renderTemplate(taskList, createTaskEditTemplate(tasks[0]), `beforeend`);
 
 for (let i = 1; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
