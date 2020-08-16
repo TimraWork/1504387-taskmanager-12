@@ -9,6 +9,7 @@ import {createTaskEditTemplate} from "./view/task-edit.js";
 import {createLoadMoreTemplate} from "./view/load-more.js";
 import {generateTask} from "./mock/task.js";
 import {generateFilter} from "./mock/filter.js";
+import {renderTemplate} from "./utils.js";
 
 const main = document.querySelector(`.main`);
 const header = main.querySelector(`.main__control`);
@@ -20,25 +21,25 @@ const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-render(header, createMenuTemplate(), `beforeend`);
-render(main, createFilterTemplate(filters), `beforeend`);
-render(main, createBoardTemplate(), `beforeend`);
+renderTemplate(header, createMenuTemplate(), `beforeend`);
+renderTemplate(main, createFilterTemplate(filters), `beforeend`);
+renderTemplate(main, createBoardTemplate(), `beforeend`);
 
 const board = main.querySelector(`.board`);
 const taskList = board.querySelector(`.board__tasks`);
 
-render(board, createSortTemplate(), `afterbegin`);
+renderTemplate(board, createSortTemplate(), `afterbegin`);
 
-render(taskList, createTaskEditTemplate(tasks[0]), `beforeend`);
+renderTemplate(taskList, createTaskEditTemplate(tasks[0]), `beforeend`);
 
 for (let i = 1; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
-  render(taskList, createTaskTemplate(tasks[i]), `beforeend`);
+  renderTemplate(taskList, createTaskTemplate(tasks[i]), `beforeend`);
 }
 
 if (tasks.length > TASK_COUNT_PER_STEP) {
   let renderedTaskCount = TASK_COUNT_PER_STEP;
 
-  render(board, createLoadMoreTemplate(), `beforeend`);
+  renderTemplate(board, createLoadMoreTemplate(), `beforeend`);
 
   const loadMoreButton = board.querySelector(`.load-more`);
 
@@ -46,7 +47,7 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
     evt.preventDefault();
     tasks
       .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-      .forEach((task) => render(taskList, createTaskTemplate(task), `beforeend`));
+      .forEach((task) => renderTemplate(taskList, createTaskTemplate(task), `beforeend`));
 
     renderedTaskCount += TASK_COUNT_PER_STEP;
 
