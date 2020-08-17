@@ -8,4 +8,3 @@ export const MaxTime = {
   MS_SECONDS: 999,
 };
 export const DAYS_RANGE = [-7, 7];
-
