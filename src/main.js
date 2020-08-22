@@ -11,21 +11,21 @@ import LoadMoreView from "./view/load-more.js";
 
 import {generateTask} from "./mock/task.js";
 import {generateFilter} from "./mock/filter.js";
-import {render, RenderPosition} from "./utils.js";
+import {render, RenderPosition, replace, remove} from "./utils/render.js";
 
 const main = document.querySelector(`.main`);
 const header = main.querySelector(`.main__control`);
 
 const renderTask = (taskListElement, task) => {
-  const taskComponent = new TaskView(task); // создаем экземпляры класса (дом элементы) зараннее, чтобы потом их удобно использовать
+  const taskComponent = new TaskView(task);
   const taskEditComponent = new TaskEditView(task);
 
   const replaceCardToForm = () => {
-    taskListElement.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+    replace(taskEditComponent, taskComponent);
   };
 
   const replaceFormToCard = () => {
-    taskListElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+    replace(taskComponent, taskEditComponent);
   };
 
   const onEscKeyDown = (evt) => {
@@ -58,15 +58,17 @@ const renderBoard = (boardContainer, boardTasks) => {
   const boardComponent = new BoardView();
   const taskListComponent = new TaskListView();
 
-  render(boardContainer, boardComponent.getElement(), RenderPosition.BEFOREEND);
+  render(boardContainer, boardComponent, RenderPosition.BEFOREEND);
+
+  render(boardContainer, boardComponent, RenderPosition.BEFOREEND);
 
   if (boardTasks.every((task) => task.isArchive)) {
-    render(boardComponent.getElement(), new NoTaskView().getElement(), RenderPosition.BEFOREEND);
+    render(boardComponent.getElement(), new NoTaskView(), RenderPosition.BEFOREEND);
     return;
   }
-  render(boardComponent.getElement(), new SortView().getElement(), RenderPosition.BEFOREEND);
-
-  render(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFOREEND);
+  // render(boardComponent.getElement(), new SortView().getElement(), RenderPosition.BEFOREEND);
+  render(boardComponent, new SortView(), RenderPosition.AFTERBEGIN);
+  render(boardComponent, taskListComponent, RenderPosition.BEFOREEND);
 
   boardTasks
     .slice(0, Math.min(tasks.length, TASK_COUNT_PER_STEP))
@@ -76,7 +78,7 @@ const renderBoard = (boardContainer, boardTasks) => {
     let renderedTaskCount = TASK_COUNT_PER_STEP;
 
     const loadMoreButtonComponent = new LoadMoreView();
-    render(boardComponent.getElement(), loadMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
+    render(boardComponent, loadMoreButtonComponent, RenderPosition.BEFOREEND);
 
     loadMoreButtonComponent.setClickHandler(() => {
       boardTasks
@@ -86,15 +88,14 @@ const renderBoard = (boardContainer, boardTasks) => {
       renderedTaskCount += TASK_COUNT_PER_STEP;
 
       if (renderedTaskCount >= boardTasks.length) {
-        loadMoreButtonComponent.getElement().remove();
-        loadMoreButtonComponent.removeElement();
+        remove(loadMoreButtonComponent);
       }
     });
   }
 
 };
 
-render(header, new MenuView().getElement(), RenderPosition.BEFOREEND);
-render(main, new FilterView(filters).getElement(), RenderPosition.BEFOREEND);
+render(header, new MenuView(), RenderPosition.BEFOREEND);
+render(main, new FilterView(filters), RenderPosition.BEFOREEND);
 
 renderBoard(main, tasks);
