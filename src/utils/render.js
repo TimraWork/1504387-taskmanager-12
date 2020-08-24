@@ -5,14 +5,14 @@ export const RenderPosition = {
   BEFOREEND: `beforeend`,
 };
 
-export const render = (container, child, place) => {
-  if (container instanceof Abstract) {
-    container = container.getElement();
-  }
+const getNodeElement = (element) => {
+  return element instanceof Abstract ? element.getElement() : element;
+};
 
-  if (child instanceof Abstract) {
-    child = child.getElement();
-  }
+export const render = (container, child, place) => {
+
+  container = getNodeElement(container);
+  child = getNodeElement(child);
 
   switch (place) {
     case RenderPosition.AFTERBEGIN:
@@ -28,11 +28,7 @@ export const render = (container, child, place) => {
 };
 
 export const renderTemplate = (container, template, place) => {
-  if (container instanceof Abstract) {
-    container = container.getElement();
-  }
-
-  container.insertAdjacentHTML(place, template);
+  getNodeElement(container).insertAdjacentHTML(place, template);
 };
 
 export const createElement = (template) => {
@@ -43,13 +39,9 @@ export const createElement = (template) => {
 };
 
 export const replace = (newChild, oldChild) => {
-  if (oldChild instanceof Abstract) {
-    oldChild = oldChild.getElement();
-  }
 
-  if (newChild instanceof Abstract) {
-    newChild = newChild.getElement();
-  }
+  oldChild = getNodeElement(oldChild);
+  newChild = getNodeElement(newChild);
 
   const parent = oldChild.parentElement;
 

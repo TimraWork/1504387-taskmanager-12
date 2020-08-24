@@ -1,4 +1,11 @@
-import {COLORS, MaxTime, DAYS_RANGE} from "../const.js";
+import {COLORS} from "../const.js";
+export const DAYS_RANGE = [-7, 7];
+export const MaxTime = {
+  HOURS: 23,
+  MINUTES: 59,
+  SECONDS: 59,
+  MS_SECONDS: 999,
+};
 import {getRandomInteger} from '../utils/common.js';
 
 const generateDescription = () => {
