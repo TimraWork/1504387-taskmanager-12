@@ -1,6 +1,6 @@
 import SmartView from "./smart.js";
 import {COLORS} from "../const.js";
-import {isTaskExpired, isTaskRepeating, humanizeTaskDueDate, humanizeTaskDueTime} from "../utils/task.js";
+import {isTaskRepeating, humanizeTaskDueDate} from "../utils/task.js";
 import flatpickr from "flatpickr";
 
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
@@ -34,7 +34,7 @@ const createTaskEditDateTemplate = (dueDate, isDueDate) => {
           type="text"
           placeholder=""
           name="date"
-          value="${humanizeTaskDueDate(dueDate)} ${humanizeTaskDueTime(dueDate)}"
+          value="${dueDate !== null ? humanizeTaskDueDate(dueDate) : ``} "
         />
       </label>
     </fieldset>` : ``}
@@ -82,10 +82,6 @@ const createTaskEditColorsTemplate = (currentColor) => {
 export const createTaskEditTemplate = (data) => {
   const {color, description, dueDate, repeating, isDueDate, isRepeating} = data;
 
-  const deadlineClass = isTaskExpired(dueDate)
-    ? `card--deadline`
-    : ``;
-
   const dateTemplate = createTaskEditDateTemplate(dueDate, isDueDate);
 
   const repeatingClass = isRepeating
@@ -96,10 +92,10 @@ export const createTaskEditTemplate = (data) => {
 
   const colorsTemplate = createTaskEditColorsTemplate(color);
 
-  const isSubmitDisabled = isRepeating && !isTaskRepeating(repeating);
+  const isSubmitDisabled = (isDueDate && dueDate === null) || (isRepeating && !isTaskRepeating(repeating));
 
   return (
-    `<article class="card card--edit card--${color} ${deadlineClass} ${repeatingClass}">
+    `<article class="card card--edit card--${color} ${repeatingClass}">
         <form class="card__form" method="get">
           <div class="card__inner">
             <div class="card__color-bar">
@@ -160,6 +156,7 @@ export default class TaskEdit extends SmartView {
     this._repeatingChangeHandler = this._repeatingChangeHandler.bind(this);
     this._colorChangeHandler = this._colorChangeHandler.bind(this);
 
+    this._setDatepicker();
     this._setInnerHandlers();
   }
 
@@ -175,6 +172,7 @@ export default class TaskEdit extends SmartView {
 
   restoreHandlers() {
     this._setInnerHandlers();
+    this._setDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
   }
 
