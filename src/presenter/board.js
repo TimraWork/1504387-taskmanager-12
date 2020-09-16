@@ -138,8 +138,8 @@ export default class Board {
     }
 
     this._currentSortType = sortType;
-    this._clearBoard({resetRenderedTaskCount: true}); // this._clearTaskList();
-    this._renderBoard(); // this._renderTaskList();
+    this._clearBoard({resetRenderedTaskCount: true});
+    this._renderBoard();
   }
 
   _renderSort() {
@@ -150,14 +150,6 @@ export default class Board {
     this._sortComponent = new SortView(this._currentSortType);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
     render(this._boardComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
-  }
-
-  _clearTaskList() {
-    Object
-      .values(this._taskPresenter)
-      .forEach((presenter) => presenter.destroy());
-    this._taskPresenter = {};
-    this._renderedTaskCount = TASK_COUNT_PER_STEP;
   }
 
   _renderTask(task) {
