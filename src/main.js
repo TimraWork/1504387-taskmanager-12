@@ -8,12 +8,15 @@ import {render, RenderPosition} from "./utils/render.js";
 
 import BoardPresenter from "./presenter/board.js";
 import TasksModel from "./model/tasks.js";
+import FilterModel from "./model/filter.js";
 
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 const filters = generateFilter(tasks);
 
 const tasksModel = new TasksModel();
 tasksModel.setTasks(tasks);
+
+const filterModel = new FilterModel();
 
 const main = document.querySelector(`.main`);
 const header = main.querySelector(`.main__control`);
