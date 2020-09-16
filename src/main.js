@@ -19,7 +19,7 @@ const filterModel = new FilterModel();
 const main = document.querySelector(`.main`);
 const header = main.querySelector(`.main__control`);
 
-const boardPresenter = new BoardPresenter(main, tasksModel);
+const boardPresenter = new BoardPresenter(main, tasksModel, filterModel);
 const filterPresenter = new FilterPresenter(main, filterModel, tasksModel);
 
 render(header, new MenuView(), RenderPosition.BEFOREEND);
