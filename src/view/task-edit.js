@@ -1,7 +1,7 @@
 import he from "he";
 import SmartView from "./smart.js";
 import {COLORS} from "../const.js";
-import {isTaskRepeating, humanizeTaskDueDate, formatTaskDueDate} from "../utils/task.js";
+import {isTaskRepeating, formatTaskDueDate} from "../utils/task.js";
 import flatpickr from "flatpickr";
 
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
