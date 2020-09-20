@@ -1,4 +1,5 @@
 import AbstractView from "./abstract.js";
+import {MenuItem} from "../const.js";
 
 const createMenuTemplate = () => {
   return (
@@ -8,6 +9,7 @@ const createMenuTemplate = () => {
         name="control"
         id="control__new-task"
         class="control__input visually-hidden"
+        value="${MenuItem.ADD_NEW_TASK}"
       />
       <label for="control__new-task" class="control__label control__label--new-task"
         >+ ADD NEW TASK</label
@@ -19,12 +21,13 @@ const createMenuTemplate = () => {
         class="control__input visually-hidden"
         checked
       />
-      <label for="control__task" class="control__label">TASKS</label>
+      <label for="control__task" class="control__label">${MenuItem.TASKS}</label>
       <input
         type="radio"
         name="control"
         id="control__statistic"
         class="control__input visually-hidden"
+        value="${MenuItem.STATISTICS}"
       />
       <label for="control__statistic" class="control__label"
         >STATISTICS</label
@@ -34,7 +37,33 @@ const createMenuTemplate = () => {
 };
 
 export default class Menu extends AbstractView {
+  constructor() {
+    super();
+
+    this._menuClickHandler = this._menuClickHandler.bind(this);
+  }
+
   getTemplate() {
     return createMenuTemplate();
+  }
+
+  _menuClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.menuClick(evt.target.value);
+  }
+
+  setMenuClickHandler(callback) {
+    console.log('setMenuClickHandler = ', );
+    this._callback.menuClick = callback;
+    this.getElement().addEventListener(`change`, this._menuClickHandler);
+  }
+
+  setMenuItem(menuItem) {
+    console.log('setMenuItem = ', );
+    const item = this.getElement().querySelector(`[value=${menuItem}]`);
+
+    if (item !== null) {
+      item.checked = true;
+    }
   }
 }

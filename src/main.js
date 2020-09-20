@@ -1,5 +1,6 @@
-import {TASK_COUNT} from "./const.js";
+import {TASK_COUNT, MenuItem} from "./const.js";
 import MenuView from "./view/menu.js";
+
 
 import {generateTask} from "./mock/task.js";
 import {render, RenderPosition} from "./utils/render.js";
@@ -21,8 +22,31 @@ const header = main.querySelector(`.main__control`);
 
 const boardPresenter = new BoardPresenter(main, tasksModel, filterModel);
 const filterPresenter = new FilterPresenter(main, filterModel, tasksModel);
+const siteMenuComponent = new MenuView();
 
-render(header, new MenuView(), RenderPosition.BEFOREEND);
+render(header, siteMenuComponent, RenderPosition.BEFOREEND);
+
+
+const handleSiteMenuClick = (menuItem) => {
+  switch (menuItem) {
+    case MenuItem.ADD_NEW_TASK:
+      // Скрыть статистику
+      // Показать доску
+      // Показать форму добавления новой задачи
+      // Убрать выделение с ADD NEW TASK после сохранения
+      break;
+    case MenuItem.TASKS:
+      // Показать доску
+      // Скрыть статистику
+      break;
+    case MenuItem.STATISTICS:
+      // Скрыть доску
+      // Показать статистику
+      break;
+  }
+};
+
+siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
 filterPresenter.init();
 boardPresenter.init();
