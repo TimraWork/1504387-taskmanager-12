@@ -10,7 +10,7 @@ import TaskNewPresenter from "./task-new.js";
 import {filter} from "../utils/filter.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 import {sortTaskUp, sortTaskDown} from "../utils/task.js";
-import {SortType, UpdateType, UserAction, FilterType} from "../const.js";
+import {SortType, UpdateType, UserAction} from "../const.js";
 
 const TASK_COUNT_PER_STEP = 8;
 
