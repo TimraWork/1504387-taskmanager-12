@@ -1,6 +1,6 @@
 import moment from "moment";
 
-const getCurrentDate = () => {
+export const getCurrentDate = () => {
   const currentDate = new Date();
 
   return new Date(currentDate);
