@@ -26,14 +26,21 @@ const siteMenuComponent = new MenuView();
 
 render(header, siteMenuComponent, RenderPosition.BEFOREEND);
 
+const handleTaskNewFormClose = () => {
+  siteMenuComponent.getElement().querySelector(`[value=${MenuItem.TASKS}]`).disabled = false;
+  siteMenuComponent.setMenuItem(MenuItem.TASKS);
+};
 
 const handleSiteMenuClick = (menuItem) => {
+  // console.log('handle = ', );
   switch (menuItem) {
     case MenuItem.ADD_NEW_TASK:
       // Скрыть статистику
       // Показать доску
       // Показать форму добавления новой задачи
+      boardPresenter.createTask(handleTaskNewFormClose);
       // Убрать выделение с ADD NEW TASK после сохранения
+      siteMenuComponent.getElement().querySelector(`[value=${MenuItem.TASKS}]`).disabled = true;
       break;
     case MenuItem.TASKS:
       // Показать доску
@@ -50,8 +57,3 @@ siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
 filterPresenter.init();
 boardPresenter.init();
-
-document.querySelector(`#control__new-task`).addEventListener(`click`, (evt) => {
-  evt.preventDefault();
-  boardPresenter.createTask();
-});

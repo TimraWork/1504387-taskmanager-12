@@ -11,17 +11,17 @@ const createMenuTemplate = () => {
         class="control__input visually-hidden"
         value="${MenuItem.ADD_NEW_TASK}"
       />
-      <label for="control__new-task" class="control__label control__label--new-task"
-        >+ ADD NEW TASK</label
-      >
+      <label for="control__new-task" class="control__label control__label--new-task">+ ADD NEW TASK</label>
+
       <input
         type="radio"
         name="control"
         id="control__task"
         class="control__input visually-hidden"
-        checked
+        value="${MenuItem.TASKS}"
       />
-      <label for="control__task" class="control__label">${MenuItem.TASKS}</label>
+      <label for="control__task" class="control__label">TASKS</label>
+
       <input
         type="radio"
         name="control"
@@ -29,9 +29,7 @@ const createMenuTemplate = () => {
         class="control__input visually-hidden"
         value="${MenuItem.STATISTICS}"
       />
-      <label for="control__statistic" class="control__label"
-        >STATISTICS</label
-      >
+      <label for="control__statistic" class="control__label">STATISTICS</label>
     </section>`
   );
 };
@@ -53,13 +51,11 @@ export default class Menu extends AbstractView {
   }
 
   setMenuClickHandler(callback) {
-    console.log('setMenuClickHandler = ', );
     this._callback.menuClick = callback;
     this.getElement().addEventListener(`change`, this._menuClickHandler);
   }
 
   setMenuItem(menuItem) {
-    console.log('setMenuItem = ', );
     const item = this.getElement().querySelector(`[value=${menuItem}]`);
 
     if (item !== null) {
