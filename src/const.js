@@ -1,6 +1,6 @@
 export const TASK_COUNT = 20;
 export const TASK_COUNT_PER_STEP = 8;
-export const COLORS = [`black`, `yellow`, `blue`, `green`, `pink`];
+// export const COLORS = [`black`, `yellow`, `blue`, `green`, `pink`];
 export const SortType = {
   DEFAULT: `default`,
   DATE_DOWN: `date-down`,
@@ -29,3 +29,11 @@ export const MenuItem = {
   TASKS: `TASKS`,
   STATISTICS: `STATISTICS`
 };
+export const Color = {
+  BLACK: `black`,
+  YELLOW: `yellow`,
+  BLUE: `blue`,
+  GREEN: `green`,
+  PINK: `pink`
+};
+export const COLORS = Object.values(Color);
