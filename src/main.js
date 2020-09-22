@@ -4,7 +4,7 @@ import MenuView from "./view/menu.js";
 import StatisticsView from "./view/statistics.js";
 
 import {generateTask} from "./mock/task.js";
-import {render, RenderPosition} from "./utils/render.js";
+import {render, RenderPosition, remove} from "./utils/render.js";
 
 import BoardPresenter from "./presenter/board.js";
 import FilterPresenter from "./presenter/filter.js";
@@ -32,9 +32,12 @@ const handleTaskNewFormClose = () => {
   siteMenuComponent.setMenuItem(MenuItem.TASKS);
 };
 
+let statisticsComponent = null;
+
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.ADD_NEW_TASK:
+      remove(statisticsComponent);
       boardPresenter.destroy();
       filterModel.setFilter(UpdateType.MAJOR, FilterType.ALL);
       boardPresenter.init();
@@ -43,11 +46,12 @@ const handleSiteMenuClick = (menuItem) => {
       break;
     case MenuItem.TASKS:
       boardPresenter.init();
-      // Скрыть статистику
+      remove(statisticsComponent);
       break;
     case MenuItem.STATISTICS:
       boardPresenter.destroy();
-      // Показать статистику
+      statisticsComponent = new StatisticsView(tasksModel.getTasks());
+      render(main, statisticsComponent, RenderPosition.BEFOREEND);
       break;
   }
 };
@@ -55,9 +59,4 @@ const handleSiteMenuClick = (menuItem) => {
 siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
 filterPresenter.init();
-
-// Для удобства отладки скроем доску
-// boardPresenter.init();
-
-// и отобразим сразу статистику
-render(main, new StatisticsView(tasksModel.getTasks()), RenderPosition.BEFOREEND);
+boardPresenter.init();
